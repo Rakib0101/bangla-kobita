@@ -70,7 +70,26 @@ class Poem extends Model
     public function syncTags(array $tagNames)
     {
         $tags = collect($tagNames)->map(function ($name) {
-            return \App\Models\Tag::firstOrCreate(['name' => $name]);
+            $slug = \Str::slug($name);
+            
+            // First try to find by slug
+            $tag = \App\Models\Tag::where('slug', $slug)->first();
+            
+            if (!$tag) {
+                // If not found, try to find by name_bangla
+                $tag = \App\Models\Tag::where('name_bangla', $name)->first();
+            }
+            
+            if (!$tag) {
+                // If still not found, create new tag
+                $tag = \App\Models\Tag::create([
+                    'name_bangla' => $name,
+                    'name_english' => $name,
+                    'slug' => $slug
+                ]);
+            }
+            
+            return $tag;
         });
 
         $this->tags()->sync($tags->pluck('id'));

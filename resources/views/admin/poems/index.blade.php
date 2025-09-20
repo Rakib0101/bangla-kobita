@@ -12,9 +12,13 @@
                 <p class="text-gray-600 bangla-text">সব কবিতার তালিকা এবং ব্যবস্থাপনা</p>
             </div>
             <div class="flex space-x-4">
-                <a href="{{ route('poems.create') }}"
+                <a href="{{ route('admin.poems.create') }}"
                     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bangla-text">
-                    <i class="fas fa-plus mr-2"></i>নতুন কবিতা
+                    <i class="fas fa-plus mr-2"></i>নতুন কবিতা (অ্যাডমিন)
+                </a>
+                <a href="{{ route('poems.create') }}"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded bangla-text">
+                    <i class="fas fa-user-plus mr-2"></i>নিজের কবিতা
                 </a>
             </div>
         </div>
@@ -179,10 +183,14 @@
                                         <i class="fas fa-book text-4xl mb-4"></i>
                                         <p class="text-lg font-medium">কোন কবিতা পাওয়া যায়নি</p>
                                         <p class="text-sm">এখনো কোন কবিতা প্রকাশিত হয়নি।</p>
-                                        <div class="mt-4">
-                                            <a href="{{ route('poems.create') }}"
+                                        <div class="mt-4 space-x-2">
+                                            <a href="{{ route('admin.poems.create') }}"
                                                 class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 bangla-text">
-                                                প্রথম কবিতা লিখুন
+                                                প্রথম কবিতা লিখুন (অ্যাডমিন)
+                                            </a>
+                                            <a href="{{ route('poems.create') }}"
+                                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 bangla-text">
+                                                নিজের কবিতা
                                             </a>
                                         </div>
                                     </div>

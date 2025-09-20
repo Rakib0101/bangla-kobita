@@ -336,4 +336,89 @@ class AdminDashboardController extends Controller
         return redirect()->route('admin.categories')
             ->with('success', 'বিভাগ সফলভাবে মুছে ফেলা হয়েছে।');
     }
+    
+    /**
+     * Show the form for creating a new poem (admin version).
+     */
+    public function createPoem(): View
+    {
+        $categories = Category::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+            
+        $poets = Poet::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+            
+        $users = User::where('is_active', true)
+            ->where('role', 'user')
+            ->orderBy('name_bangla')
+            ->get();
+            
+        return view('admin.poems.create', compact('categories', 'poets', 'users'));
+    }
+    
+    /**
+     * Store a newly created poem (admin version).
+     */
+    public function storePoem(Request $request)
+    {
+        $validated = $request->validate([
+            'title_bangla' => 'required|string|max:255',
+            'title_english' => 'nullable|string|max:255',
+            'content_bangla' => 'required|string',
+            'content_english' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'poet_id' => 'nullable|exists:poets,id',
+            'user_id' => 'required|exists:users,id',
+            'is_published' => 'boolean',
+            'is_featured' => 'boolean',
+            'is_translation' => 'boolean',
+            'tags' => 'nullable|string',
+        ]);
+
+        $slug = $this->generateUniqueSlug($validated['title_bangla']);
+        
+        $poem = Poem::create([
+            'title_bangla' => $validated['title_bangla'],
+            'title_english' => $validated['title_english'],
+            'slug' => $slug,
+            'content_bangla' => $validated['content_bangla'],
+            'content_english' => $validated['content_english'],
+            'category_id' => $validated['category_id'],
+            'poet_id' => $validated['poet_id'],
+            'user_id' => $validated['user_id'],
+            'is_published' => $validated['is_published'] ?? false,
+            'is_featured' => $validated['is_featured'] ?? false,
+            'is_translation' => $validated['is_translation'] ?? false,
+        ]);
+
+        // Handle tags if provided
+        if (!empty($validated['tags'])) {
+            $tagNames = array_map('trim', explode(',', $validated['tags']));
+            $poem->syncTags($tagNames);
+        }
+
+        return redirect()->route('admin.poems')
+            ->with('success', 'কবিতা সফলভাবে সংরক্ষিত হয়েছে।');
+    }
+
+    /**
+     * Generate a unique slug for the poem
+     */
+    private function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = \Str::slug($title);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (Poem::where('slug', $slug)->when($excludeId, function ($query) use ($excludeId) {
+            return $query->where('id', '!=', $excludeId);
+        })->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
 }

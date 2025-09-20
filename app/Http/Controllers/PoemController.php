@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PoemController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -56,9 +57,12 @@ class PoemController extends Controller
             'tags' => 'nullable|string',
         ]);
 
+        $slug = $this->generateUniqueSlug($validated['title_bangla']);
+        
         $poem = Auth::user()->poems()->create([
             'title_bangla' => $validated['title_bangla'],
             'title_english' => $validated['title_english'],
+            'slug' => $slug,
             'content_bangla' => $validated['content_bangla'],
             'content_english' => $validated['content_english'],
             'category_id' => $validated['category_id'],
@@ -121,9 +125,12 @@ class PoemController extends Controller
             'tags' => 'nullable|string',
         ]);
 
+        $slug = $this->generateUniqueSlug($validated['title_bangla'], $poem->id);
+        
         $poem->update([
             'title_bangla' => $validated['title_bangla'],
             'title_english' => $validated['title_english'],
+            'slug' => $slug,
             'content_bangla' => $validated['content_bangla'],
             'content_english' => $validated['content_english'],
             'category_id' => $validated['category_id'],
@@ -154,5 +161,24 @@ class PoemController extends Controller
 
         return redirect()->route('dashboard.user')
             ->with('success', 'কবিতা সফলভাবে মুছে ফেলা হয়েছে।');
+    }
+
+    /**
+     * Generate a unique slug for the poem
+     */
+    private function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = \Str::slug($title);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (Poem::where('slug', $slug)->when($excludeId, function ($query) use ($excludeId) {
+            return $query->where('id', '!=', $excludeId);
+        })->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }
