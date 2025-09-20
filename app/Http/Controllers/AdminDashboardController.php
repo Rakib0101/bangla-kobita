@@ -42,7 +42,7 @@ class AdminDashboardController extends Controller
             ->limit(10)
             ->get();
         
-        return view('dashboard.admin', compact(
+        return view('admin.dashboard', compact(
             'totalUsers',
             'activeUsers',
             'totalPoems',
@@ -65,6 +65,71 @@ class AdminDashboardController extends Controller
             ->paginate(20);
             
         return view('admin.users.index', compact('users'));
+    }
+    
+    /**
+     * Show the specified user.
+     */
+    public function showUser(User $user): View
+    {
+        $user->load(['poems.category']);
+        $recentPoems = $user->poems()->with('category')->latest()->limit(5)->get();
+        
+        return view('admin.users.show', compact('user', 'recentPoems'));
+    }
+    
+    /**
+     * Show the form for editing the specified user.
+     */
+    public function editUser(User $user): View
+    {
+        return view('admin.users.edit', compact('user'));
+    }
+    
+    /**
+     * Update the specified user.
+     */
+    public function updateUser(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'name_bangla' => 'nullable|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:user,admin',
+            'is_active' => 'boolean',
+        ]);
+        
+        $user->update($validated);
+        
+        return redirect()->route('admin.users.show', $user)
+            ->with('success', 'ইউজার সফলভাবে আপডেট হয়েছে।');
+    }
+    
+    /**
+     * Remove the specified user.
+     */
+    public function destroyUser(User $user)
+    {
+        // Prevent admin from deleting themselves
+        if ($user->id === auth()->id()) {
+            return redirect()->route('admin.users')
+                ->with('error', 'আপনি নিজেকে মুছে ফেলতে পারবেন না।');
+        }
+        
+        // Prevent deletion of admin users
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.users')
+                ->with('error', 'অ্যাডমিন ইউজার মুছে ফেলা যাবে না।');
+        }
+        
+        // Delete user's poems first
+        $user->poems()->delete();
+        
+        // Delete the user
+        $user->delete();
+        
+        return redirect()->route('admin.users')
+            ->with('success', 'ইউজার সফলভাবে মুছে ফেলা হয়েছে।');
     }
     
     /**
@@ -102,5 +167,173 @@ class AdminDashboardController extends Controller
             ->paginate(20);
             
         return view('admin.categories.index', compact('categories'));
+    }
+    
+    /**
+     * Show website settings.
+     */
+    public function settings(): View
+    {
+        return view('admin.settings');
+    }
+    
+    /**
+     * Update website settings.
+     */
+    public function updateSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'site_name' => 'required|string|max:255',
+            'site_tagline' => 'nullable|string|max:255',
+            'site_description' => 'nullable|string|max:500',
+            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'favicon' => 'nullable|image|mimes:ico,png,jpg|max:2048',
+            'facebook_url' => 'nullable|url',
+            'twitter_url' => 'nullable|url',
+            'instagram_url' => 'nullable|url',
+            'youtube_url' => 'nullable|url',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'meta_keywords' => 'nullable|string|max:500',
+            'admin_email' => 'nullable|email',
+            'contact_email' => 'nullable|email',
+            'noreply_email' => 'nullable|email',
+        ]);
+        
+        // Handle file uploads
+        if ($request->hasFile('site_logo')) {
+            $logoPath = $request->file('site_logo')->store('public/settings');
+            $validated['site_logo'] = str_replace('public/', '', $logoPath);
+        }
+        
+        if ($request->hasFile('favicon')) {
+            $faviconPath = $request->file('favicon')->store('public/settings');
+            $validated['favicon'] = str_replace('public/', '', $faviconPath);
+        }
+        
+        // Store settings in config or database
+        // For now, we'll store in session or cache
+        foreach ($validated as $key => $value) {
+            if ($value !== null) {
+                config(['app.' . $key => $value]);
+            }
+        }
+        
+        return redirect()->route('admin.settings')
+            ->with('success', 'সেটিংস সফলভাবে আপডেট হয়েছে।');
+    }
+    
+    /**
+     * Show analytics dashboard.
+     */
+    public function analytics(): View
+    {
+        // Get analytics data
+        $poemsPerMonth = Poem::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+            
+        $usersPerMonth = User::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('month')
+            ->pluck('count', 'month')
+            ->toArray();
+        
+        return view('admin.analytics', compact('poemsPerMonth', 'usersPerMonth'));
+    }
+    
+    /**
+     * Show poets management.
+     */
+    public function poets(): View
+    {
+        $poets = Poet::withCount('poems')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+            
+        return view('admin.poets.index', compact('poets'));
+    }
+    
+    /**
+     * Show the form for creating a new category.
+     */
+    public function createCategory(): View
+    {
+        return view('admin.categories.create');
+    }
+    
+    /**
+     * Store a newly created category.
+     */
+    public function storeCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'name_bangla' => 'required|string|max:255',
+            'name_english' => 'nullable|string|max:255',
+            'description_bangla' => 'nullable|string|max:500',
+            'description_english' => 'nullable|string|max:500',
+            'color' => 'nullable|string|max:7',
+            'is_active' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
+        ]);
+        
+        $validated['slug'] = \Str::slug($validated['name_bangla']);
+        $validated['is_active'] = $validated['is_active'] ?? true;
+        $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        
+        Category::create($validated);
+        
+        return redirect()->route('admin.categories')
+            ->with('success', 'বিভাগ সফলভাবে তৈরি হয়েছে।');
+    }
+    
+    /**
+     * Show the form for editing the specified category.
+     */
+    public function editCategory(Category $category): View
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+    
+    /**
+     * Update the specified category.
+     */
+    public function updateCategory(Request $request, Category $category)
+    {
+        $validated = $request->validate([
+            'name_bangla' => 'required|string|max:255',
+            'name_english' => 'nullable|string|max:255',
+            'description_bangla' => 'nullable|string|max:500',
+            'description_english' => 'nullable|string|max:500',
+            'color' => 'nullable|string|max:7',
+            'is_active' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
+        ]);
+        
+        $validated['slug'] = \Str::slug($validated['name_bangla']);
+        
+        $category->update($validated);
+        
+        return redirect()->route('admin.categories')
+            ->with('success', 'বিভাগ সফলভাবে আপডেট হয়েছে।');
+    }
+    
+    /**
+     * Remove the specified category.
+     */
+    public function destroyCategory(Category $category)
+    {
+        // Check if category has poems
+        if ($category->poems()->count() > 0) {
+            return redirect()->route('admin.categories')
+                ->with('error', 'এই বিভাগে কবিতা আছে, তাই মুছে ফেলা যাবে না।');
+        }
+        
+        $category->delete();
+        
+        return redirect()->route('admin.categories')
+            ->with('success', 'বিভাগ সফলভাবে মুছে ফেলা হয়েছে।');
     }
 }

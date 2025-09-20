@@ -50,8 +50,37 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/admin-dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.admin');
     Route::get('/admin/users', [AdminDashboardController::class, 'users'])->name('admin.users');
+    Route::get('/admin/users/{user}', [AdminDashboardController::class, 'showUser'])->name('admin.users.show');
+    Route::get('/admin/users/{user}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('admin.users.destroy');
     Route::get('/admin/poems', [AdminDashboardController::class, 'poems'])->name('admin.poems');
     Route::get('/admin/categories', [AdminDashboardController::class, 'categories'])->name('admin.categories');
+    Route::get('/admin/categories/create', [AdminDashboardController::class, 'createCategory'])->name('admin.categories.create');
+    Route::post('/admin/categories', [AdminDashboardController::class, 'storeCategory'])->name('admin.categories.store');
+    Route::get('/admin/categories/{category}/edit', [AdminDashboardController::class, 'editCategory'])->name('admin.categories.edit');
+    Route::put('/admin/categories/{category}', [AdminDashboardController::class, 'updateCategory'])->name('admin.categories.update');
+    Route::delete('/admin/categories/{category}', [AdminDashboardController::class, 'destroyCategory'])->name('admin.categories.destroy');
+    Route::get('/admin/poets', [AdminDashboardController::class, 'poets'])->name('admin.poets');
+    Route::get('/admin/settings', [AdminDashboardController::class, 'settings'])->name('admin.settings');
+    Route::put('/admin/settings', [AdminDashboardController::class, 'updateSettings'])->name('admin.settings.update');
+    Route::get('/admin/analytics', [AdminDashboardController::class, 'analytics'])->name('admin.analytics');
+    Route::get('/admin/test', function() { return view('admin.test'); })->name('admin.test');
+    Route::get('/admin/debug', function() { 
+        $poems = \App\Models\Poem::with(['user', 'category'])->get();
+        return response()->json([
+            'poems_count' => $poems->count(),
+            'poems' => $poems->map(function($poem) {
+                return [
+                    'id' => $poem->id,
+                    'title' => $poem->title_bangla ?? $poem->title,
+                    'user' => $poem->user->name_bangla ?? $poem->user->name,
+                    'category' => $poem->category->name_bangla ?? $poem->category->name,
+                    'is_published' => $poem->is_published
+                ];
+            })
+        ]);
+    })->name('admin.debug');
 });
 
 // Profile routes
