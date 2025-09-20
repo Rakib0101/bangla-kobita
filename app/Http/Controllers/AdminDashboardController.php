@@ -70,11 +70,24 @@ class AdminDashboardController extends Controller
     /**
      * Show all poems for admin management.
      */
-    public function poems(): View
+    public function poems(Request $request): View
     {
-        $poems = Poem::with(['user', 'category'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = Poem::with(['user', 'category']);
+        
+        // Filter by status
+        if ($request->has('status')) {
+            switch ($request->status) {
+                case 'published':
+                    $query->where('is_published', true);
+                    break;
+                case 'draft':
+                    $query->where('is_published', false);
+                    break;
+                // 'all' or no status means no filter
+            }
+        }
+        
+        $poems = $query->orderBy('created_at', 'desc')->paginate(20);
             
         return view('admin.poems.index', compact('poems'));
     }

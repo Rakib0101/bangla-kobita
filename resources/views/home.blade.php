@@ -47,7 +47,7 @@
                 </p>
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-500 bangla-text">রবীন্দ্রনাথ ঠাকুর</span>
-                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
+                    <a href="{{ route('poems.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
                         পড়ুন →
                     </a>
                 </div>
@@ -88,7 +88,7 @@
                 <p class="text-sm text-gray-600 mb-4 bangla-text">
                     কবির সংক্ষিপ্ত পরিচয় এখানে থাকবে
                 </p>
-                <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
+                <a href="{{ route('poems.index') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
                     কবিতা দেখুন
                 </a>
             </div>

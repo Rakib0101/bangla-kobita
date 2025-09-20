@@ -18,12 +18,29 @@
 
     <!-- Bangla Font Support -->
     <style>
+        /* Custom Font Definitions */
+        @font-face {
+            font-family: 'AbuJMAkkas';
+            src: url('/font/Li Abu J M Akkas Unicode.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'AbuJMAkkas';
+            src: url('/font/Li Abu J M Akkas Unicode Italic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: italic;
+            font-display: swap;
+        }
+
         body {
-            font-family: 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif;
+            font-family: 'AbuJMAkkas', 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif;
         }
 
         .bangla-text {
-            font-family: 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif;
+            font-family: 'AbuJMAkkas', 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif;
             direction: ltr;
             unicode-bidi: bidi-override;
         }
@@ -35,7 +52,7 @@
         /* Keyboard Switcher Styles */
         .keyboard-avro,
         .keyboard-unijoy {
-            font-family: 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif !important;
+            font-family: 'AbuJMAkkas', 'Kalpurush', 'SolaimanLipi', 'Bangla', 'Noto Sans Bengali', sans-serif !important;
             direction: ltr;
             unicode-bidi: bidi-override;
             font-size: 16px !important;
@@ -83,11 +100,11 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
-    <div class="min-h-screen"
+    <div class="min-h-screen max-w-7xl mx-auto shadow-sm"
         style="background-image: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);">
         <!-- Top Header -->
-        <div class="bg-gray-100 py-2">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-black py-2">
                 <div class="flex justify-between items-center">
                     <!-- Logo and Site Title -->
                     <div class="flex items-center">
@@ -179,8 +196,8 @@
         </div>
 
         <!-- Main Navigation -->
-        <nav class="bg-gradient-to-r from-teal-700 to-red-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-teal-700 to-red-800">
                 <div class="flex items-center justify-between h-12">
                     <!-- Left side navigation -->
                     <div class="flex items-center space-x-8">
@@ -210,26 +227,120 @@
                         </a>
                     </div>
 
-                    <!-- Right side - Date -->
-                    <div class="text-white text-sm bangla-text">
-                        @php
-                            $banglaMonths = [
-                                'জানুয়ারি',
-                                'ফেব্রুয়ারি',
-                                'মার্চ',
-                                'এপ্রিল',
-                                'মে',
-                                'জুন',
-                                'জুলাই',
-                                'আগস্ট',
-                                'সেপ্টেম্বর',
-                                'অক্টোবর',
-                                'নভেম্বর',
-                                'ডিসেম্বর',
-                            ];
-                            $currentMonth = $banglaMonths[date('n') - 1];
-                        @endphp
-                        আজ {{ date('j') }} {{ $currentMonth }} {{ date('Y') }}
+                    <!-- Right side - Calendar Date -->
+                    <div class="flex items-center space-x-4 text-white text-sm">
+                        <!-- Calendar Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+
+                        <!-- Date Display -->
+                        <div class="text-center">
+                            @php
+                                // Bengali Calendar Months
+                                $banglaMonths = [
+                                    'বৈশাখ',
+                                    'জ্যৈষ্ঠ',
+                                    'আষাঢ়',
+                                    'শ্রাবণ',
+                                    'ভাদ্র',
+                                    'আশ্বিন',
+                                    'কার্তিক',
+                                    'অগ্রহায়ণ',
+                                    'পৌষ',
+                                    'মাঘ',
+                                    'ফাল্গুন',
+                                    'চৈত্র',
+                                ];
+
+                                // Bengali Days
+                                $banglaDays = [
+                                    'রবিবার',
+                                    'সোমবার',
+                                    'মঙ্গলবার',
+                                    'বুধবার',
+                                    'বৃহস্পতিবার',
+                                    'শুক্রবার',
+                                    'শনিবার',
+                                ];
+
+                                // English months for fallback
+                                $englishMonths = [
+                                    'January',
+                                    'February',
+                                    'March',
+                                    'April',
+                                    'May',
+                                    'June',
+                                    'July',
+                                    'August',
+                                    'September',
+                                    'October',
+                                    'November',
+                                    'December',
+                                ];
+
+                                // Convert English date to Bengali calendar
+                                function getBengaliDate($englishDate)
+                                {
+                                    $banglaMonths = [
+                                        'বৈশাখ',
+                                        'জ্যৈষ্ঠ',
+                                        'আষাঢ়',
+                                        'শ্রাবণ',
+                                        'ভাদ্র',
+                                        'আশ্বিন',
+                                        'কার্তিক',
+                                        'অগ্রহায়ণ',
+                                        'পৌষ',
+                                        'মাঘ',
+                                        'ফাল্গুন',
+                                        'চৈত্র',
+                                    ];
+
+                                    // Simple approximation - in real implementation, you'd use proper Bengali calendar conversion
+    $month = (int) date('n', $englishDate);
+    $day = (int) date('j', $englishDate);
+    $year = (int) date('Y', $englishDate);
+
+    // Approximate conversion (this is simplified - real Bengali calendar is more complex)
+    $banglaYear = $year - 593; // Approximate year difference
+    $banglaMonth = $month - 3; // Approximate month offset
+    if ($banglaMonth <= 0) {
+        $banglaMonth += 12;
+        $banglaYear--;
+    }
+
+    return [
+        'day' => $day,
+        'month' => $banglaMonths[$banglaMonth - 1],
+        'year' => $banglaYear,
+        'month_num' => $banglaMonth,
+    ];
+}
+
+$currentDay = $banglaDays[date('w')];
+$currentDate = date('j');
+$currentYear = date('Y');
+$currentMonthName = date('F');
+
+                                $banglaDate = getBengaliDate(time());
+                            @endphp
+
+                            <!-- Bengali Calendar Date -->
+                            <div class="bangla-text font-medium">
+                                {{ $currentDay }}, {{ $banglaDate['day'] }} {{ $banglaDate['month'] }}
+                                {{ $banglaDate['year'] }}
+                            </div>
+
+                            <!-- English Date -->
+                            <div class="english-text text-xs opacity-90">
+                                {{ $currentDay }}, {{ $currentMonthName }} {{ $currentDate }},
+                                {{ $currentYear }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

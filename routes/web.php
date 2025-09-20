@@ -13,6 +13,7 @@ Route::get('/', function () {
 
 // Public routes
 Route::get('/poems', [PoemController::class, 'index'])->name('poems.index');
+Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 
 Route::get('/poets', function () {
     return view('poets.index');
@@ -44,9 +45,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/poems/{poem}', [PoemController::class, 'update'])->name('poems.update');
         Route::delete('/poems/{poem}', [PoemController::class, 'destroy'])->name('poems.destroy');
     });
-
-    // Public poem show route (must be after specific routes)
-    Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 
 // Admin Dashboard
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
