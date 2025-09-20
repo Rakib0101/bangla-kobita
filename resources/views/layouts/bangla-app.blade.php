@@ -219,6 +219,12 @@
                             class="text-white hover:text-gray-200 text-sm font-medium bangla-text">
                             কবিতার আসর
                         </a>
+                        @auth
+                            <a href="{{ route('adda.index') }}"
+                                class="text-white hover:text-gray-200 text-sm font-medium bangla-text">
+                                আড্ডা
+                            </a>
+                        @endauth
                         <a href="#" class="text-white hover:text-gray-200 text-sm font-medium bangla-text">
                             আবৃত্তি
                         </a>

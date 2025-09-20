@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\PoemController;
+use App\Http\Controllers\AddaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +22,12 @@ Route::get('/poets', function () {
 Route::get('/categories', function () {
     return view('categories.index');
 })->name('categories.index');
+
+// Adda (Group Chat) routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/adda', [AddaController::class, 'index'])->name('adda.index');
+    Route::post('/adda', [AddaController::class, 'store'])->name('adda.store');
+});
 
 // Dashboard routes with role-based redirection
 Route::get('/dashboard', function () {
