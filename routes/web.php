@@ -10,17 +10,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// Test route
-Route::get('/test-poems-create', function () {
-    return 'Test route works!';
-});
-
-// Test controller route
-Route::get('/test-controller', [PoemController::class, 'create']);
 
 // Public routes
 Route::get('/poems', [PoemController::class, 'index'])->name('poems.index');
-Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 
 Route::get('/poets', function () {
     return view('poets.index');
@@ -50,8 +42,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/poems', [PoemController::class, 'store'])->name('poems.store');
     Route::get('/poems/{poem}/edit', [PoemController::class, 'edit'])->name('poems.edit');
     Route::put('/poems/{poem}', [PoemController::class, 'update'])->name('poems.update');
-    Route::delete('/poems/{poem}', [PoemController::class, 'destroy'])->name('poems.destroy');
-});
+        Route::delete('/poems/{poem}', [PoemController::class, 'destroy'])->name('poems.destroy');
+    });
+
+    // Public poem show route (must be after specific routes)
+    Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 
 // Admin Dashboard
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {

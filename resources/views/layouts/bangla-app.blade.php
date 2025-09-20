@@ -102,26 +102,55 @@
 
                     <!-- Right side utilities -->
                     <div class="flex items-center space-x-6">
-                        <!-- Registration -->
-                        <a href="{{ route('register') }}"
-                            class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            রেজিস্ট্রেশন
-                        </a>
+                        @auth
+                            <!-- User Account Section -->
+                            <div class="flex items-center space-x-4">
+                                <!-- User Profile Link -->
+                                <a href="{{ route('dashboard') }}"
+                                    class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    আপনার পাতা
+                                </a>
 
-                        <!-- Login -->
-                        <a href="{{ route('login') }}"
-                            class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                                </path>
-                            </svg>
-                            লগ ইন
-                        </a>
+                                <!-- Logout Button -->
+                                <form method="POST" action="{{ route('logout') }}" class="inline">
+                                    @csrf
+                                    <button type="submit"
+                                        class="flex items-center text-red-600 hover:text-red-700 bangla-text">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                            </path>
+                                        </svg>
+                                        লগ আউট
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <!-- Registration -->
+                            <a href="{{ route('register') }}"
+                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                                রেজিস্ট্রেশন
+                            </a>
+
+                            <!-- Login -->
+                            <a href="{{ route('login') }}"
+                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                    </path>
+                                </svg>
+                                লগ ইন
+                            </a>
+                        @endauth
 
                         <!-- Social Media Icons -->
                         <div class="flex items-center space-x-3">
