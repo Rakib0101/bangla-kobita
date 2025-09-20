@@ -63,4 +63,16 @@ class Poem extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Sync tags for the poem
+     */
+    public function syncTags(array $tagNames)
+    {
+        $tags = collect($tagNames)->map(function ($name) {
+            return \App\Models\Tag::firstOrCreate(['name' => $name]);
+        });
+
+        $this->tags()->sync($tags->pluck('id'));
+    }
 }

@@ -11,14 +11,13 @@
                 <!-- Poem Title in Bangla -->
                 <div>
                     <label for="title_bangla" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        কবিতার শিরোনাম (বাংলায়)
+                        কবিতার শিরোনাম (বাংলায়) <span class="text-red-500">*</span>
                     </label>
-                    <x-keyboard-switcher name="input_method" value="{{ old('input_method', 'avro') }}" />
                     <input type="text" id="title_bangla" name="title_bangla" value="{{ old('title_bangla') }}"
-                        class="mt-2 block w-full bangla-input border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        class="block w-full bangla-input border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="কবিতার শিরোনাম লিখুন..." required>
                     @error('title_bangla')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -31,27 +30,27 @@
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Poem title in English...">
                     @error('title_english')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Category Selection -->
                 <div>
                     <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        কবিতার বিভাগ
+                        কবিতার বিভাগ <span class="text-red-500">*</span>
                     </label>
                     <select id="category_id" name="category_id"
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         required>
                         <option value="">বিভাগ নির্বাচন করুন</option>
-                        @foreach (\App\Models\Category::where('is_active', true)->orderBy('sort_order')->get() as $category)
+                        @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name_bangla }}
                             </option>
                         @endforeach
                     </select>
                     @error('category_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -70,20 +69,20 @@
                         @endforeach
                     </select>
                     @error('poet_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Poem Content in Bangla -->
                 <div>
                     <label for="content_bangla" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        কবিতার বিষয়বস্তু (বাংলায়)
+                        কবিতার বিষয়বস্তু (বাংলায়) <span class="text-red-500">*</span>
                     </label>
                     <textarea id="content_bangla" name="content_bangla" rows="15"
                         class="block w-full bangla-input border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="আপনার কবিতা এখানে লিখুন..." required>{{ old('content_bangla') }}</textarea>
                     @error('content_bangla')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -96,7 +95,7 @@
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="English translation of the poem...">{{ old('content_english') }}</textarea>
                     @error('content_english')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
@@ -109,9 +108,12 @@
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="প্রেম, প্রকৃতি, জীবন...">
                     @error('tags')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <!-- Keyboard Switcher for Bengali Input -->
+                <x-keyboard-switcher name="input_method" value="{{ old('input_method', 'avro') }}" />
 
                 <!-- Poem Type Options -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

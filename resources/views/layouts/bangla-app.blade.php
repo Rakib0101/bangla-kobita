@@ -123,18 +123,6 @@
                             লগ ইন
                         </a>
 
-                        <!-- Language Selector -->
-                        <div class="flex items-center text-teal-600">
-                            <select class="bg-transparent border-none text-teal-600 focus:outline-none">
-                                <option value="bn">Bangla</option>
-                                <option value="en">English</option>
-                            </select>
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-
                         <!-- Social Media Icons -->
                         <div class="flex items-center space-x-3">
                             <a href="#"

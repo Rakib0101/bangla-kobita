@@ -3,16 +3,24 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\PoemController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
+// Test route
+Route::get('/test-poems-create', function () {
+    return 'Test route works!';
+});
+
+// Test controller route
+Route::get('/test-controller', [PoemController::class, 'create']);
+
 // Public routes
-Route::get('/poems', function () {
-    return view('poems.index');
-})->name('poems.index');
+Route::get('/poems', [PoemController::class, 'index'])->name('poems.index');
+Route::get('/poems/{poem}', [PoemController::class, 'show'])->name('poems.show');
 
 Route::get('/poets', function () {
     return view('poets.index');
@@ -34,11 +42,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // User Dashboard
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/user-dashboard', [UserDashboardController::class, 'index'])->name('dashboard.user');
-    Route::get('/poems/create', [UserDashboardController::class, 'createPoem'])->name('poems.create');
-    Route::get('/poems/{poem}', [UserDashboardController::class, 'showPoem'])->name('poems.show');
-    Route::get('/poems/{poem}/edit', [UserDashboardController::class, 'editPoem'])->name('poems.edit');
+    
+    // Poem management routes for authenticated users
+    Route::get('/poems/create', [PoemController::class, 'create'])->name('poems.create');
+    Route::post('/poems', [PoemController::class, 'store'])->name('poems.store');
+    Route::get('/poems/{poem}/edit', [PoemController::class, 'edit'])->name('poems.edit');
+    Route::put('/poems/{poem}', [PoemController::class, 'update'])->name('poems.update');
+    Route::delete('/poems/{poem}', [PoemController::class, 'destroy'])->name('poems.destroy');
 });
 
 // Admin Dashboard
