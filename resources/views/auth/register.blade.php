@@ -15,15 +15,55 @@
             <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
                 @csrf
 
-                <!-- Name -->
+                <!-- Display general errors -->
+                @if ($errors->any())
+                    <div class="bg-red-50 border border-red-200 rounded-md p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800 bangla-text">
+                                    রেজিস্ট্রেশনে সমস্যা হয়েছে:
+                                </h3>
+                                <div class="mt-2 text-sm text-red-700">
+                                    <ul class="list-disc list-inside space-y-1">
+                                        @foreach ($errors->all() as $error)
+                                            <li class="bangla-text">{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- Login Name -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        নাম <span class="text-red-500">*</span>
+                    <label for="login_name" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
+                        লগইন নাম <span class="text-red-500">*</span>
                     </label>
-                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                    <input id="login_name" type="text" name="login_name" value="{{ old('login_name') }}" required autofocus
+                        autocomplete="username"
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="ইংরেজিতে লিখুন (যেমন: john_doe)">
+                    @error('login_name')
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Name in English -->
+                <div>
+                    <label for="name_english" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
+                        নাম (ইংরেজিতে) <span class="text-red-500">*</span>
+                    </label>
+                    <input id="name_english" type="text" name="name_english" value="{{ old('name_english') }}" required
                         autocomplete="name"
-                        class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    @error('name')
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="আপনার নাম ইংরেজিতে লিখুন">
+                    @error('name_english')
                         <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
@@ -31,9 +71,9 @@
                 <!-- Name in Bangla -->
                 <div>
                     <label for="name_bangla" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        নাম (বাংলায়)
+                        নাম (বাংলায়) <span class="text-red-500">*</span>
                     </label>
-                    <input id="name_bangla" type="text" name="name_bangla" value="{{ old('name_bangla') }}"
+                    <input id="name_bangla" type="text" name="name_bangla" value="{{ old('name_bangla') }}" required
                         autocomplete="name"
                         class="block w-full bangla-input border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="আপনার নাম বাংলায় লিখুন...">
@@ -80,14 +120,54 @@
                 <!-- Input Method Selection -->
                 <x-keyboard-switcher name="input_method" value="{{ old('input_method', 'avro') }}" />
 
+                <!-- Has Other Account -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
+                        আপনার কি অন্য কোন অ্যাকাউন্ট আছে? <span class="text-red-500">*</span>
+                    </label>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input id="has_other_account_no" type="radio" name="has_other_account" value="no"
+                                {{ old('has_other_account', 'no') == 'no' ? 'checked' : '' }} required
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="has_other_account_no" class="ml-2 block text-sm text-gray-700 bangla-text">
+                                না
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="has_other_account_yes" type="radio" name="has_other_account" value="yes"
+                                {{ old('has_other_account') == 'yes' ? 'checked' : '' }}
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="has_other_account_yes" class="ml-2 block text-sm text-gray-700 bangla-text">
+                                হ্যাঁ
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="has_other_account_inactive" type="radio" name="has_other_account" value="inactive"
+                                {{ old('has_other_account') == 'inactive' ? 'checked' : '' }}
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="has_other_account_inactive" class="ml-2 block text-sm text-gray-700 bangla-text">
+                                ছিল কিন্তু এখন নিষ্ক্রিয়
+                            </label>
+                        </div>
+                    </div>
+                    @error('has_other_account')
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Terms and Conditions -->
                 <div class="flex items-center">
-                    <input id="terms" type="checkbox" name="terms" required
+                    <input id="terms_accepted" type="checkbox" name="terms_accepted" value="1"
+                        {{ old('terms_accepted') ? 'checked' : '' }} required
                         class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                    <label for="terms" class="ml-2 block text-sm text-gray-700 bangla-text">
+                    <label for="terms_accepted" class="ml-2 block text-sm text-gray-700 bangla-text">
                         আমি <a href="#" class="text-blue-600 hover:text-blue-500">শর্তাবলী</a> এবং <a href="#"
                             class="text-blue-600 hover:text-blue-500">গোপনীয়তা নীতি</a> মেনে চলতে সম্মত
                     </label>
+                    @error('terms_accepted')
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="flex items-center justify-between">
