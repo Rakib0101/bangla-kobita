@@ -1,0 +1,42 @@
+name: Deploy Laravel Project to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Deploy on main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Setup PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'  # Change according to your project
+        extensions: mbstring, bcmath, pdo_mysql, tokenizer, xml, curl
+
+    # Step 3: Install Composer dependencies
+    - name: Install Composer dependencies
+      run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+    # Step 4: Prepare SSH
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.8.1
+      with:
+        ssh-private-key: ${{ secrets.CPANEL_SSH_KEY }}
+
+    # Step 5: Deploy to server via rsync
+    - name: Deploy to cPanel
+      run: |
+        rsync -avz --delete --exclude='.git/' --exclude='node_modules/' ./ ${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }}:${{ secrets.DEPLOY_PATH }}
+
+    # Step 6: Run migrations & optimize (optional)
+    - name: Run Laravel commands
+      run: |
+        ssh ${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }} "cd ${{ secrets.DEPLOY_PATH }} && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache"
