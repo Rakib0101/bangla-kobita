@@ -18,7 +18,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.1'  # Change according to your project
+        php-version: '8.2'  # Change according to your project
         extensions: mbstring, bcmath, pdo_mysql, tokenizer, xml, curl
 
     # Step 3: Install Composer dependencies
