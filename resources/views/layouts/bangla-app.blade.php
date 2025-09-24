@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'বাংলা কবিতা' }} - বাংলা কবিতার আসর</title>
+    <title>{{ $title ?? '' }} - বাংলা কবিতার আসর</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -96,6 +96,31 @@
             background-color: #f9fafb;
             border-color: #6B7280;
         }
+
+        /* Additional responsive styles */
+        @media (max-width: 640px) {
+            .mobile-hidden {
+                display: none !important;
+            }
+
+            .mobile-text-xs {
+                font-size: 0.75rem !important;
+            }
+
+            .mobile-compact {
+                padding: 0.25rem !important;
+            }
+        }
+
+        /* Ensure mobile menu appears above other content */
+        .mobile-menu {
+            z-index: 9999;
+        }
+
+        /* Smooth transitions for responsive elements */
+        .responsive-transition {
+            transition: all 0.3s ease-in-out;
+        }
     </style>
 </head>
 
@@ -109,82 +134,82 @@
                     <!-- Logo and Site Title -->
                     <div class="flex items-center">
                         <a href="{{ route('home') }}" class="flex items-center">
-                            <span class="text-3xl font-bold text-teal-600 bangla-text">বাংলা</span>
-                            <span class="text-3xl font-bold text-red-700 bangla-text ml-1">কবিতা</span>
+                            <span class="text-2xl sm:text-3xl font-bold text-teal-600 bangla-text">বাংলা</span>
+                            <span class="text-2xl sm:text-3xl font-bold text-red-700 bangla-text ml-1">কবিতা</span>
                         </a>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-600 bangla-text">কবি ও কবিতার ওয়েবসাইট</p>
+                        <div class="ml-2 sm:ml-4 hidden sm:block">
+                            <p class="text-xs sm:text-sm text-gray-600 bangla-text">কবি ও কবিতার ওয়েবসাইট</p>
                         </div>
                     </div>
 
                     <!-- Right side utilities -->
-                    <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2 sm:space-x-6">
                         @auth
                             <!-- User Account Section -->
-                            <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-2 sm:space-x-4">
                                 <!-- User Profile Link -->
                                 <a href="{{ route('dashboard') }}"
-                                    class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
-                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    class="flex items-center text-teal-600 hover:text-teal-700 bangla-text text-sm">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    আপনার পাতা
+                                    <span class="hidden sm:inline">আপনার পাতা</span>
                                 </a>
 
                                 <!-- Logout Button -->
                                 <form method="POST" action="{{ route('logout') }}" class="inline">
                                     @csrf
                                     <button type="submit"
-                                        class="flex items-center text-red-600 hover:text-red-700 bangla-text">
-                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        class="flex items-center text-red-600 hover:text-red-700 bangla-text text-sm">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                                             </path>
                                         </svg>
-                                        লগ আউট
+                                        <span class="hidden sm:inline">লগ আউট</span>
                                     </button>
                                 </form>
                             </div>
                         @else
                             <!-- Registration -->
                             <a href="{{ route('register') }}"
-                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text text-sm">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                         clip-rule="evenodd"></path>
                                 </svg>
-                                রেজিস্ট্রেশন
+                                <span class="hidden sm:inline">রেজিস্ট্রেশন</span>
                             </a>
 
                             <!-- Login -->
                             <a href="{{ route('login') }}"
-                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                class="flex items-center text-teal-600 hover:text-teal-700 bangla-text text-sm">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                                     </path>
                                 </svg>
-                                লগ ইন
+                                <span class="hidden sm:inline">লগ ইন</span>
                             </a>
                         @endauth
 
                         <!-- Social Media Icons -->
-                        <div class="flex items-center space-x-3">
+                        <div class="flex items-center space-x-2 sm:space-x-3">
                             <a href="#"
-                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700">
-                                <span class="text-white text-sm font-bold">f</span>
+                                class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                <span class="text-white text-xs sm:text-sm font-bold">f</span>
                             </a>
                             <a href="#"
-                                class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center hover:bg-blue-600">
-                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded flex items-center justify-center hover:bg-blue-600">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                 </svg>
                             </a>
                             <a href="#"
-                                class="w-8 h-8 bg-red-600 rounded flex items-center justify-center hover:bg-red-700">
-                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                class="w-6 h-6 sm:w-8 sm:h-8 bg-red-600 rounded flex items-center justify-center hover:bg-red-700">
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                                 </svg>
@@ -196,11 +221,22 @@
         </div>
 
         <!-- Main Navigation -->
-        <nav class="">
+        <nav class="relative" x-data="{ mobileMenuOpen: false }" @click.outside="mobileMenuOpen = false">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-teal-700 to-red-800">
                 <div class="flex items-center justify-between h-12">
-                    <!-- Left side navigation -->
-                    <div class="flex items-center space-x-8">
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" type="button"
+                                class="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Desktop navigation -->
+                    <div class="hidden md:flex items-center space-x-8">
                         <!-- Home Icon -->
                         <a href="{{ route('home') }}" class="text-white hover:text-gray-200">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,9 +270,9 @@
                     </div>
 
                     <!-- Right side - Calendar Date -->
-                    <div class="flex items-center space-x-4 text-white text-sm">
+                    <div class="flex items-center space-x-2 sm:space-x-4 text-white text-sm">
                         <!-- Calendar Icon -->
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                             </path>
@@ -336,7 +372,7 @@ $currentMonthName = date('F');
                             @endphp
 
                             <!-- Bengali Calendar Date -->
-                            <div class="bangla-text font-medium">
+                            <div class="bangla-text font-medium text-xs sm:text-sm">
                                 {{ $currentDay }}, {{ $banglaDate['day'] }} {{ $banglaDate['month'] }}
                                 {{ $banglaDate['year'] }}
                             </div>
@@ -349,6 +385,156 @@ $currentMonthName = date('F');
                         </div>
                     </div>
                 </div>
+
+            </div>
+
+            <!-- Mobile menu overlay -->
+            <div x-show="mobileMenuOpen"
+                 x-transition:enter="transition-opacity ease-linear duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="transition-opacity ease-linear duration-300"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="md:hidden fixed inset-0 bg-black bg-opacity-25 z-40"
+                 @click="mobileMenuOpen = false">
+            </div>
+
+            <!-- Mobile menu drawer -->
+            <div x-show="mobileMenuOpen"
+                 x-transition:enter="transition ease-in-out duration-300 transform"
+                 x-transition:enter-start="-translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="transition ease-in-out duration-300 transform"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="-translate-x-full"
+                 class="md:hidden fixed top-0 left-0 bottom-0 w-64 bg-gradient-to-b from-teal-700 to-red-800 shadow-xl z-50 overflow-y-auto">
+
+                <!-- Drawer Header -->
+                <div class="flex items-center justify-between p-4 border-b border-white border-opacity-20">
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold text-teal-200 bangla-text">বাংলা</span>
+                        <span class="text-xl font-bold text-red-200 bangla-text ml-1">কবিতা</span>
+                    </div>
+                    <button @click="mobileMenuOpen = false"
+                            class="text-white hover:text-gray-200 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="px-4 py-6 space-y-4">
+                    <a href="{{ route('home') }}"
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                        হোম
+                    </a>
+
+                    <a href="{{ route('poets.index') }}"
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        খ্যাতিমান কবি
+                    </a>
+
+                    <a href="{{ route('poems.index') }}"
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        কবিতার আসর
+                    </a>
+
+                    @auth
+                        <a href="{{ route('adda.index') }}"
+                           @click="mobileMenuOpen = false"
+                           class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                            </svg>
+                            আড্ডা
+                        </a>
+                    @endauth
+
+                    <a href="#"
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                        আবৃত্তি
+                    </a>
+
+                    <a href="#"
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center text-white hover:text-gray-200 py-3 px-2 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors duration-200 bangla-text">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        আলোচনা
+                    </a>
+                </div>
+
+                <!-- User Actions (if authenticated) -->
+                @auth
+                    <div class="border-t border-white border-opacity-20 px-4 py-4">
+                        <div class="space-y-3">
+                            <a href="{{ route('dashboard') }}"
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-teal-200 hover:text-teal-100 py-2 bangla-text">
+                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path>
+                                </svg>
+                                আপনার পাতা
+                            </a>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                        class="flex items-center text-red-300 hover:text-red-200 py-2 bangla-text w-full text-left">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                        </path>
+                                    </svg>
+                                    লগ আউট
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <div class="border-t border-white border-opacity-20 px-4 py-4">
+                        <div class="space-y-3">
+                            <a href="{{ route('register') }}"
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-teal-200 hover:text-teal-100 py-2 bangla-text">
+                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                                </svg>
+                                রেজিস্ট্রেশন
+                            </a>
+
+                            <a href="{{ route('login') }}"
+                               @click="mobileMenuOpen = false"
+                               class="flex items-center text-teal-200 hover:text-teal-100 py-2 bangla-text">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                লগ ইন
+                            </a>
+                        </div>
+                    </div>
+                @endauth
             </div>
         </nav>
 
