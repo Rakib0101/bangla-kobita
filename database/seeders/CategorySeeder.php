@@ -76,7 +76,10 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::updateOrCreate(
+                ['slug' => $category['slug']], // lookup by unique slug
+                $category                      // update or insert with this data
+            );
         }
     }
 }
