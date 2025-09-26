@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PoemController extends Controller
 {
@@ -55,9 +56,17 @@ class PoemController extends Controller
             'category_id' => 'required|exists:categories,id',
             'is_published' => 'boolean',
             'tags' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'youtube_embed_code' => 'nullable|string|max:1000',
         ]);
 
         $slug = $this->generateUniqueSlug($validated['title_bangla']);
+        
+        // Handle image upload
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('poem-images', 'public');
+        }
         
         $poem = Auth::user()->poems()->create([
             'title_bangla' => $validated['title_bangla'],
@@ -65,6 +74,8 @@ class PoemController extends Controller
             'slug' => $slug,
             'content_bangla' => $validated['content_bangla'],
             'content_english' => $validated['content_english'],
+            'image_path' => $imagePath,
+            'youtube_embed_code' => $validated['youtube_embed_code'],
             'category_id' => $validated['category_id'],
             'is_published' => $validated['is_published'] ?? false,
         ]);
@@ -123,9 +134,21 @@ class PoemController extends Controller
             'category_id' => 'required|exists:categories,id',
             'is_published' => 'boolean',
             'tags' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'youtube_embed_code' => 'nullable|string|max:1000',
         ]);
 
         $slug = $this->generateUniqueSlug($validated['title_bangla'], $poem->id);
+        
+        // Handle image upload
+        $imagePath = $poem->image_path; // Keep existing image if no new one uploaded
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($poem->image_path && Storage::disk('public')->exists($poem->image_path)) {
+                Storage::disk('public')->delete($poem->image_path);
+            }
+            $imagePath = $request->file('image')->store('poem-images', 'public');
+        }
         
         $poem->update([
             'title_bangla' => $validated['title_bangla'],
@@ -133,6 +156,8 @@ class PoemController extends Controller
             'slug' => $slug,
             'content_bangla' => $validated['content_bangla'],
             'content_english' => $validated['content_english'],
+            'image_path' => $imagePath,
+            'youtube_embed_code' => $validated['youtube_embed_code'],
             'category_id' => $validated['category_id'],
             'is_published' => $validated['is_published'] ?? false,
         ]);

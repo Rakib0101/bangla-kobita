@@ -17,6 +17,8 @@ class Poem extends Model
         'slug',
         'content_bangla',
         'content_english',
+        'image_path',
+        'youtube_embed_code',
         'summary_bangla',
         'summary_english',
         'user_id',

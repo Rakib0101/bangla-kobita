@@ -4,20 +4,19 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\PoemController;
+use App\Http\Controllers\PoetController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AddaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 // Public routes
 Route::get('/poems', [PoemController::class, 'index'])->name('poems.index');
 
-Route::get('/poets', function () {
-    return view('poets.index');
-})->name('poets.index');
+Route::get('/poets', [PoetController::class, 'index'])->name('poets.index');
+Route::get('/poets/{poet}', [PoetController::class, 'show'])->name('poets.show');
 
 Route::get('/categories', function () {
     return view('categories.index');

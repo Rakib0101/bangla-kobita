@@ -65,6 +65,14 @@
 
         <!-- Poem Content -->
         <div class="bg-white rounded-lg shadow-md p-8 mb-6">
+            <!-- Image Display -->
+            @if ($poem->image_path)
+                <div class="mb-8 text-center">
+                    <img src="{{ Storage::url($poem->image_path) }}" alt="{{ $poem->title_bangla }}"
+                        class="max-w-full h-auto mx-auto rounded-lg shadow-lg">
+                </div>
+            @endif
+
             <div class="prose prose-lg max-w-none">
                 <div class="bangla-text text-lg leading-relaxed whitespace-pre-line">
                     {{ $poem->content_bangla }}
@@ -79,6 +87,18 @@
                     </div>
                 @endif
             </div>
+
+            <!-- YouTube Video Display -->
+            @if ($poem->youtube_embed_code)
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 bangla-text">কবিতা পাঠ/গান</h3>
+                    <div class="flex justify-center">
+                        <div class="w-full max-w-2xl">
+                            {!! $poem->youtube_embed_code !!}
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <!-- Tags -->
