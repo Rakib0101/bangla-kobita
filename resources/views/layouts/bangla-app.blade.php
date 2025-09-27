@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? '' }} - বাংলা কবিতার আসর</title>
+    <title>সাহিত্য ক্যানভাস — শব্দের রঙে আঁকা স্বপ্নের জগৎ।</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -528,8 +528,38 @@ $currentMonthName = date('F');
         </nav>
 
         <!-- Page Content -->
-        <main class="py-6">
-            @yield('content')
+        <main class="py-6" x-data="{ sidebarOpen: false }">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Mobile Sidebar Toggle Button -->
+                <div class="lg:hidden mb-4">
+                    <button @click="sidebarOpen = !sidebarOpen"
+                        class="flex items-center justify-center w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <span class="bangla-text">সাইডবার দেখুন</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Main Content Area -->
+                    <div class="flex-1 min-w-0">
+                        @yield('content')
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="lg:w-80 flex-shrink-0" :class="sidebarOpen ? 'block' : 'hidden lg:block'"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 transform scale-95"
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        x-transition:leave="transition ease-in duration-200"
+                        x-transition:leave-start="opacity-100 transform scale-100"
+                        x-transition:leave-end="opacity-0 transform scale-95">
+                        @yield('sidebar')
+                    </div>
+                </div>
+            </div>
         </main>
 
         <!-- Footer -->

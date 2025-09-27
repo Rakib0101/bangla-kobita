@@ -63,6 +63,25 @@ class HomeController extends Controller
             }
         }
         
+        // Get data for sidebar
+        $featuredWritings = Poem::with(['user', 'category'])
+            ->where('is_published', true)
+            ->where('is_featured', true)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+            
+        $popularWriters = Poet::where('is_active', true)
+            ->withCount(['poems' => function ($query) {
+                $query->where('is_published', true);
+            }])
+            ->orderBy('poems_count', 'desc')
+            ->limit(5)
+            ->get();
+            
+        // Get recent comments (if you have a comments system)
+        $recentComments = collect([]); // Placeholder for now
+        
         // Get statistics
         $stats = [
             'total_poems' => Poem::where('is_published', true)->count(),
@@ -77,6 +96,9 @@ class HomeController extends Controller
             'categories', 
             'featuredPoets', 
             'poemsByCategory',
+            'featuredWritings',
+            'popularWriters',
+            'recentComments',
             'stats'
         ));
     }

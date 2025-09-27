@@ -1,15 +1,16 @@
 @extends('layouts.bangla-app')
 
 @section('content')
-    <div class="max-w-7xl mx-auto">
+    <div>
 
         <!-- Image Banner Slider Section -->
-        <div class="relative w-full h-auto mb-8 overflow-hidden">
+        <div class="relative w-full h-auto mb-8 overflow-hidden max-h-[300px]">
             <!-- Slider Container -->
             <div class="flex transition-transform duration-500 h-auto" id="slider">
                 <!-- Slide 1 -->
                 <div class="w-full flex-shrink-0 relative">
-                    <img src="{{ asset('assets/images/banner.png') }}" alt="Banner 1" class="w-full h-auto object-fill">
+                    <img src="{{ asset('assets/images/banner.png') }}" alt="Banner 1"
+                        class="aspect-[24/9] w-full h-auto object-fill">
                 </div>
                 <!-- Slide 2 -->
                 <div class="w-full flex-shrink-0 relative">
@@ -80,36 +81,133 @@
             updateSlider();
         </script>
         <!-- Hero Section -->
-        {{-- <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 mb-8 text-white">
+        <div class="bg-white border border-gray-200 rounded-lg p-4 mb-8 shadow-sm">
             <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4 bangla-text">
+                <h1 class="text-xl md:text-3xl font-bold mb-4 text-gray-800 bangla-text">
                     বাংলা কবিতার আসর
                 </h1>
-                <p class="text-xl md:text-2xl mb-6 bangla-text">
+                <p class="text-base md:text-lg mb-6 text-gray-600 bangla-text">
                     কবিতা পড়ুন, লিখুন এবং ভাগ করুন
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="{{ route('posts.index') }}"
-                        class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 bangla-text">
+                        class="bg-blue-600 text-smmd:text-base text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 bangla-text">
                         কবিতা পড়ুন
                     </a>
                     @auth
                         <a href="{{ route('posts.create') }}"
-                            class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 bangla-text">
+                            class="bg-gray-100 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition duration-300 bangla-text">
                             কবিতা লিখুন
                         </a>
                     @else
                         <a href="{{ route('register') }}"
-                            class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 bangla-text">
+                            class="bg-gray-100 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-200 transition duration-300 bangla-text">
                             সদস্য হন
                         </a>
                     @endauth
                 </div>
             </div>
-        </div> --}}
+        </div>
+
+        <!-- Mission & Vision Section -->
+        <div class="mb-12">
+            <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+                <!-- Mission Section -->
+                <div class="mb-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg md:text-xl font-bold text-gray-800 bangla-text">লক্ষ্য</h2>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 md:p-6 shadow border-l-4 border-green-500">
+                        <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                            "সাহিত্য ক্যানভাস" হলো এক অনন্ত ক্যানভাস, যেখানে শব্দের রঙে ফুটে ওঠে ভাব, অনুভূতি ও স্বপ্ন।
+                            আমাদের লক্ষ্য হলো বাংলা ভাষার সাহিত্যকে এমন এক ডিজিটাল আকাশে পৌঁছে দেওয়া, যেখানে পাঠক ও লেখক
+                            একসাথে ঘনিষ্ঠ সংযোগ অনুভব করতে পারে। এখানে প্রতিটি লেখা, প্রতিটি শব্দ, প্রতিটি রঙ — সবই মিলিয়ে
+                            তৈরি করে জীবনের গল্প।
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Vision Section -->
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg md:text-xl font-bold text-gray-800 bangla-text">উদ্দেশ্য</h2>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4 md:p-6 border-l-4 border-gray-400">
+                        <div class="space-y-1.5">
+                            <div class="flex gap-2 items-center">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full flex-shrink-0"></div>
+                                <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                                    নতুন ও অভিজ্ঞ লেখকদের জন্য তৈরি করা এক উন্মুক্ত মঞ্চ, যেখানে প্রতিটি লেখা সমানভাবে
+                                    সম্মানিত হবে।
+                                </p>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full flex-shrink-0"></div>
+                                <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                                    পাঠক ও লেখকের মধ্যে হৃদয়ের সেতুবন্ধন গড়ে তোলা, যেন শব্দের ভেলায় ভেসে যায় নতুন
+                                    অনুপ্রেরণা।
+                                </p>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full flex-shrink-0"></div>
+                                <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                                    কবিতা, গল্প, প্রবন্ধ, নাটক, সমালোচনা—সকল ধারার সাহিত্যকর্ম প্রকাশের সুযোগ নিশ্চিত করা।
+                                </p>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full flex-shrink-0"></div>
+                                <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                                    বাংলা ভাষা, সংস্কৃতি ও সাহিত্যের আলোকে বিশ্বমঞ্চে ছড়িয়ে দেওয়া।
+                                </p>
+                            </div>
+                            <div class="flex gap-2 items-center">
+                                <div class="w-2 h-2 bg-gray-500 rounded-full flex-shrink-0"></div>
+                                <p class="text-sm md:text-base text-gray-700 leading-relaxed bangla-text">
+                                    সৃষ্টিশীলতার বৈচিত্র্যকে সমানভাবে সম্মান জানানো এবং নতুন সম্ভাবনার উন্মেষ ঘটানো।
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="mt-8 text-center">
+                    <div class="bg-gray-100 rounded-lg p-6">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800 bangla-text">আপনার সৃজনশীলতা প্রকাশ করুন</h3>
+                        <p class="text-base mb-6 text-gray-600 bangla-text">একসাথে গড়ে তুলি বাংলা সাহিত্যের নতুন ইতিহাস
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="{{ route('posts.create') }}"
+                                class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 bangla-text">
+                                লেখা শুরু করুন
+                            </a>
+                            <a href="{{ route('posts.index') }}"
+                                class="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition duration-300 bangla-text">
+                                সাহিত্য পড়ুন
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Latest Poems Section -->
-        <div class="mb-8 px-4 lg:px-8">
+        <div class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold bangla-text">সর্বশেষ কবিতা</h2>
                 <a href="{{ route('posts.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
@@ -179,7 +277,7 @@
         </div>
 
         <!-- Categories -->
-        <div class="mb-8 px-4 lg:px-8">
+        <div class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold bangla-text">কবিতার বিভাগ</h2>
                 <a href="{{ route('categories.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
@@ -209,7 +307,7 @@
         </div>
 
         <!-- Featured Writers -->
-        <div class="mb-8 px-4 lg:px-8">
+        <div class="mb-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold bangla-text">বিশেষ লেখক</h2>
                 <a href="{{ route('poets.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
@@ -251,7 +349,7 @@
         </div>
 
         <!-- Category-wise Content Sections -->
-        <div class="mb-8 px-4 lg:px-8">
+        <div class="mb-8">
             <h2 class="text-3xl font-bold mb-6 text-center bangla-text">বিভিন্ন ধরনের রচনা</h2>
 
             <!-- Poems Section -->
@@ -390,4 +488,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('sidebar')
+    <x-sidebar :featured-writings="$featuredWritings ?? []" :popular-writers="$popularWriters ?? []" :recent-comments="$recentComments ?? []" />
 @endsection
