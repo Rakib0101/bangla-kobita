@@ -80,7 +80,7 @@
             updateSlider();
         </script>
         <!-- Hero Section -->
-        <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 mb-8 text-white">
+        {{-- <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 mb-8 text-white">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4 bangla-text">
                     বাংলা কবিতার আসর
@@ -106,7 +106,7 @@
                     @endauth
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Latest Poems Section -->
         <div class="mb-8 px-4 lg:px-8">
