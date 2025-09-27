@@ -9,17 +9,14 @@
                     <h1 class="text-3xl font-bold text-gray-900 bangla-text mb-2">
                         {{ $poem->title_bangla }}
                     </h1>
-                    @if ($poem->title_english)
-                        <p class="text-lg text-gray-600 italic">{{ $poem->title_english }}</p>
-                    @endif
                 </div>
                 <div class="flex space-x-2">
                     @if (auth()->check() && auth()->id() === $poem->user_id)
-                        <a href="{{ route('poems.edit', $poem) }}"
+                        <a href="{{ route('posts.edit', $poem) }}"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bangla-text">
                             সম্পাদনা
                         </a>
-                        <form method="POST" action="{{ route('poems.destroy', $poem) }}" class="inline"
+                        <form method="POST" action="{{ route('posts.destroy', $poem) }}" class="inline"
                             onsubmit="return confirm('আপনি কি নিশ্চিত যে আপনি এই কবিতাটি মুছে ফেলতে চান?')">
                             @csrf
                             @method('DELETE')
@@ -78,14 +75,6 @@
                     {{ $poem->content_bangla }}
                 </div>
 
-                @if ($poem->content_english)
-                    <div class="mt-8 pt-8 border-t border-gray-200">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4">English Translation</h3>
-                        <div class="text-gray-600 leading-relaxed whitespace-pre-line">
-                            {{ $poem->content_english }}
-                        </div>
-                    </div>
-                @endif
             </div>
 
             <!-- YouTube Video Display -->
@@ -137,7 +126,7 @@
                         <span class="bangla-text">শেয়ার</span>
                     </button>
                 </div>
-                <a href="{{ route('poems.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
+                <a href="{{ route('posts.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
                     ← সব কবিতা দেখুন
                 </a>
             </div>

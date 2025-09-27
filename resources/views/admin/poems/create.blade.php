@@ -4,25 +4,25 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-md p-8">
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold bangla-text">নতুন কবিতা লিখুন (অ্যাডমিন)</h1>
-                <a href="{{ route('admin.poems') }}" 
-                   class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded bangla-text">
+                <h1 class="text-3xl font-bold bangla-text">নতুন পোস্ট লিখুন (অ্যাডমিন)</h1>
+                <a href="{{ route('admin.posts') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded bangla-text">
                     কবিতার তালিকায় ফিরে যান
                 </a>
             </div>
 
-            <form method="POST" action="{{ route('admin.poems.store') }}" class="space-y-6">
+            <form method="POST" action="{{ route('admin.posts.store') }}" class="space-y-6">
                 @csrf
 
                 <!-- Writer Selection -->
                 <div>
                     <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        কবির নাম নির্বাচন করুন <span class="text-red-500">*</span>
+                        লেখকের নাম নির্বাচন করুন <span class="text-red-500">*</span>
                     </label>
                     <select id="user_id" name="user_id"
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         required>
-                        <option value="">কবি নির্বাচন করুন</option>
+                        <option value="">লেখক নির্বাচন করুন</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                 {{ $user->name_bangla ?? $user->name }} ({{ $user->email }})
@@ -70,7 +70,8 @@
                         required>
                         <option value="">বিভাগ নির্বাচন করুন</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}"
+                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name_bangla }}
                             </option>
                         @endforeach
@@ -80,14 +81,14 @@
                     @enderror
                 </div>
 
-                <!-- Original Poet Selection (if translation) -->
+                <!-- Original Writer Selection (if translation) -->
                 <div>
                     <label for="poet_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        মূল কবি (যদি অনুবাদ হয়)
+                        মূল লেখক (যদি অনুবাদ হয়)
                     </label>
                     <select id="poet_id" name="poet_id"
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">মূল কবি নির্বাচন করুন</option>
+                        <option value="">মূল লেখক নির্বাচন করুন</option>
                         @foreach ($poets as $poet)
                             <option value="{{ $poet->id }}" {{ old('poet_id') == $poet->id ? 'selected' : '' }}>
                                 {{ $poet->name_bangla }}
@@ -173,7 +174,7 @@
 
                 <!-- Submit Buttons -->
                 <div class="flex justify-end space-x-4">
-                    <a href="{{ route('admin.poems') }}"
+                    <a href="{{ route('admin.posts') }}"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded bangla-text">
                         বাতিল
                     </a>

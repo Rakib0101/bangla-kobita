@@ -82,8 +82,8 @@
                         <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider bangla-text">
                             কন্টেন্ট ম্যানেজমেন্ট</h3>
                         <div class="mt-2 space-y-1">
-                            <a href="{{ route('admin.poems') }}"
-                                class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.poems*') ? 'sidebar-active' : 'text-gray-700 sidebar-hover' }}">
+                            <a href="{{ route('admin.posts') }}"
+                                class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.posts*') ? 'sidebar-active' : 'text-gray-700 sidebar-hover' }}">
                                 <i class="fas fa-book-open mr-3 text-sm"></i>
                                 কবিতা
                             </a>
@@ -95,7 +95,7 @@
                             <a href="{{ route('admin.poets') }}"
                                 class="group flex items-center px-3 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.poets*') ? 'sidebar-active' : 'text-gray-700 sidebar-hover' }}">
                                 <i class="fas fa-user-tie mr-3 text-sm"></i>
-                                কবি
+                                লেখক
                             </a>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 bangla-text">
                                     <i class="fas fa-home mr-2"></i>ইউজার ড্যাশবোর্ড
                                 </a>
-                                <a href="{{ route('poems.index') }}"
+                                <a href="{{ route('posts.index') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 bangla-text">
                                     <i class="fas fa-book mr-2"></i>সাইট দেখুন
                                 </a>

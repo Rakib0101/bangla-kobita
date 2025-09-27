@@ -4,13 +4,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="mb-8">
-            <h1 class="text-4xl font-bold mb-4 bangla-text">কবি সংগ্রহ</h1>
-            <p class="text-lg text-gray-600 bangla-text">বাংলা সাহিত্যের বিখ্যাত কবিদের পরিচিতি</p>
+            <h1 class="text-4xl font-bold mb-4 bangla-text">লেখক সংগ্রহ</h1>
+            <p class="text-lg text-gray-600 bangla-text">বাংলা সাহিত্যের বিখ্যাত লেখকদের পরিচিতি</p>
         </div>
 
         <!-- Featured Poets -->
         <div class="mb-12">
-            <h2 class="text-2xl font-bold mb-6 bangla-text">বিশেষ কবি</h2>
+            <h2 class="text-2xl font-bold mb-6 bangla-text">বিশেষ লেখক</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($featuredPoets as $poet)
                     <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition duration-300">
@@ -39,13 +39,13 @@
                             </div>
                             <a href="{{ route('poets.show', $poet) }}"
                                 class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm bangla-text">
-                                কবিতা দেখুন
+                                সব রচনা দেখুন
                             </a>
                         </div>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-8">
-                        <p class="text-gray-500 bangla-text">কোনো বিশেষ কবি পাওয়া যায়নি</p>
+                        <p class="text-gray-500 bangla-text">কোনো বিশেষ লেখক পাওয়া যায়নি</p>
                     </div>
                 @endforelse
             </div>
@@ -53,7 +53,7 @@
 
         <!-- All Poets -->
         <div>
-            <h2 class="text-2xl font-bold mb-6 bangla-text">সব কবি</h2>
+            <h2 class="text-2xl font-bold mb-6 bangla-text">সব লেখক</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($allPoets as $poet)
                     <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300">
@@ -79,13 +79,13 @@
                             </div>
                             <a href="{{ route('poets.show', $poet) }}"
                                 class="text-blue-600 hover:text-blue-800 text-sm bangla-text">
-                                কবিতা দেখুন
+                                সব রচনা দেখুন
                             </a>
                         </div>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-8">
-                        <p class="text-gray-500 bangla-text">কোনো কবি পাওয়া যায়নি</p>
+                        <p class="text-gray-500 bangla-text">কোনো লেখক পাওয়া যায়নি</p>
                     </div>
                 @endforelse
             </div>

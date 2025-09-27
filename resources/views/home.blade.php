@@ -89,12 +89,12 @@
                     কবিতা পড়ুন, লিখুন এবং ভাগ করুন
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('poems.index') }}"
+                    <a href="{{ route('posts.index') }}"
                         class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 bangla-text">
                         কবিতা পড়ুন
                     </a>
                     @auth
-                        <a href="{{ route('poems.create') }}"
+                        <a href="{{ route('posts.create') }}"
                             class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300 bangla-text">
                             কবিতা লিখুন
                         </a>
@@ -112,7 +112,7 @@
         <div class="mb-8 px-4 lg:px-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold bangla-text">সর্বশেষ কবিতা</h2>
-                <a href="{{ route('poems.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
+                <a href="{{ route('posts.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
                     সব কবিতা দেখুন →
                 </a>
             </div>
@@ -141,9 +141,6 @@
                         <h3 class="text-xl font-semibold mb-3 bangla-text">
                             {{ $poem->title_bangla }}
                         </h3>
-                        @if ($poem->title_english)
-                            <p class="text-sm text-gray-600 mb-3 english-text">{{ $poem->title_english }}</p>
-                        @endif
 
                         <!-- Poem Content Preview -->
                         <p class="text-gray-600 mb-4 bangla-text">
@@ -160,7 +157,7 @@
 
                         <!-- Read More Link -->
                         <div class="mt-4">
-                            <a href="{{ route('poems.show', $poem) }}"
+                            <a href="{{ route('posts.show', $poem) }}"
                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
                                 পড়ুন →
                             </a>
@@ -211,12 +208,12 @@
             </div>
         </div>
 
-        <!-- Featured Poets -->
+        <!-- Featured Writers -->
         <div class="mb-8 px-4 lg:px-8">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-3xl font-bold bangla-text">বিশেষ কবি</h2>
+                <h2 class="text-3xl font-bold bangla-text">বিশেষ লেখক</h2>
                 <a href="{{ route('poets.index') }}" class="text-blue-600 hover:text-blue-800 bangla-text">
-                    সব কবি দেখুন →
+                    সব লেখক দেখুন →
                 </a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -242,14 +239,131 @@
                         </p>
                         <a href="{{ route('poets.show', $poet) }}"
                             class="text-blue-600 hover:text-blue-800 text-sm font-medium bangla-text">
-                            কবিতা দেখুন
+                            সব রচনা দেখুন
                         </a>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-8">
-                        <p class="text-gray-500 bangla-text">কোনো বিশেষ কবি পাওয়া যায়নি</p>
+                        <p class="text-gray-500 bangla-text">কোনো বিশেষ লেখক পাওয়া যায়নি</p>
                     </div>
                 @endforelse
+            </div>
+        </div>
+
+        <!-- Category-wise Content Sections -->
+        <div class="mb-8 px-4 lg:px-8">
+            <h2 class="text-3xl font-bold mb-6 text-center bangla-text">বিভিন্ন ধরনের রচনা</h2>
+
+            <!-- Poems Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-bold bangla-text text-red-600">কবিতা</h3>
+                    <a href="{{ route('posts.index', ['category' => 'kobita']) }}"
+                        class="text-blue-600 hover:text-blue-800 bangla-text">
+                        সব কবিতা দেখুন →
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @forelse($poemsByCategory['kobita'] ?? [] as $poem)
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300">
+                            <h4 class="text-lg font-semibold mb-2 bangla-text">{{ $poem->title_bangla }}</h4>
+                            <p class="text-sm text-gray-600 mb-2 bangla-text">লেখক:
+                                {{ $poem->user->name_bangla ?? $poem->user->name }}</p>
+                            <p class="text-sm text-gray-500 mb-3">{{ Str::limit(strip_tags($poem->content_bangla), 100) }}
+                            </p>
+                            <a href="{{ route('posts.show', $poem) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm bangla-text">পড়ুন</a>
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-500 bangla-text">কোন কবিতা পাওয়া যায়নি</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Novels Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-bold bangla-text text-green-600">উপন্যাস</h3>
+                    <a href="{{ route('posts.index', ['category' => 'uponnas']) }}"
+                        class="text-blue-600 hover:text-blue-800 bangla-text">
+                        সব উপন্যাস দেখুন →
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @forelse($poemsByCategory['uponnas'] ?? [] as $poem)
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300">
+                            <h4 class="text-lg font-semibold mb-2 bangla-text">{{ $poem->title_bangla }}</h4>
+                            <p class="text-sm text-gray-600 mb-2 bangla-text">লেখক:
+                                {{ $poem->user->name_bangla ?? $poem->user->name }}</p>
+                            <p class="text-sm text-gray-500 mb-3">{{ Str::limit(strip_tags($poem->content_bangla), 100) }}
+                            </p>
+                            <a href="{{ route('posts.show', $poem) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm bangla-text">পড়ুন</a>
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-500 bangla-text">কোন উপন্যাস পাওয়া যায়নি</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Short Stories Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-bold bangla-text text-blue-600">ছোটগল্প</h3>
+                    <a href="{{ route('posts.index', ['category' => 'chotogolpo']) }}"
+                        class="text-blue-600 hover:text-blue-800 bangla-text">
+                        সব গল্প দেখুন →
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @forelse($poemsByCategory['chotogolpo'] ?? [] as $poem)
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300">
+                            <h4 class="text-lg font-semibold mb-2 bangla-text">{{ $poem->title_bangla }}</h4>
+                            <p class="text-sm text-gray-600 mb-2 bangla-text">লেখক:
+                                {{ $poem->user->name_bangla ?? $poem->user->name }}</p>
+                            <p class="text-sm text-gray-500 mb-3">{{ Str::limit(strip_tags($poem->content_bangla), 100) }}
+                            </p>
+                            <a href="{{ route('posts.show', $poem) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm bangla-text">পড়ুন</a>
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-500 bangla-text">কোন গল্প পাওয়া যায়নি</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Blogs Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-2xl font-bold bangla-text text-purple-600">ব্লগ</h3>
+                    <a href="{{ route('posts.index', ['category' => 'blog']) }}"
+                        class="text-blue-600 hover:text-blue-800 bangla-text">
+                        সব ব্লগ দেখুন →
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @forelse($poemsByCategory['blog'] ?? [] as $poem)
+                        <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300">
+                            <h4 class="text-lg font-semibold mb-2 bangla-text">{{ $poem->title_bangla }}</h4>
+                            <p class="text-sm text-gray-600 mb-2 bangla-text">লেখক:
+                                {{ $poem->user->name_bangla ?? $poem->user->name }}</p>
+                            <p class="text-sm text-gray-500 mb-3">{{ Str::limit(strip_tags($poem->content_bangla), 100) }}
+                            </p>
+                            <a href="{{ route('posts.show', $poem) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm bangla-text">পড়ুন</a>
+                        </div>
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-500 bangla-text">কোন ব্লগ পাওয়া যায়নি</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </div>
 

@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Poet Header -->
+        <!-- Writer Header -->
         <div class="bg-white rounded-lg shadow-md p-8 mb-8">
             <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
-                <!-- Poet Image -->
+                <!-- Writer Image -->
                 <div class="flex-shrink-0">
                     <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center">
                         @if ($poet->image)
@@ -20,7 +20,7 @@
                     </div>
                 </div>
 
-                <!-- Poet Info -->
+                <!-- Writer Info -->
                 <div class="flex-1 text-center md:text-left">
                     <h1 class="text-4xl font-bold text-gray-900 bangla-text mb-2">
                         {{ $poet->name_bangla }}
@@ -52,65 +52,71 @@
             </div>
         </div>
 
-        <!-- Poems by this Poet -->
+        <!-- Writings by this Writer -->
         <div class="bg-white rounded-lg shadow-md p-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-bold text-gray-900 bangla-text">
-                    {{ $poet->name_bangla }} এর কবিতা
+                    {{ $poet->name_bangla }} এর রচনা
                 </h2>
                 <span class="text-sm text-gray-500 bangla-text">
-                    মোট {{ $poems->total() }}টি কবিতা
+                    মোট {{ $totalContent }}টি রচনা
                 </span>
             </div>
 
-            @if ($poems->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach ($poems as $poem)
-                        <div class="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                            <!-- Poem Image -->
-                            @if ($poem->image_path)
-                                <div class="mb-4">
-                                    <img src="{{ Storage::url($poem->image_path) }}" alt="{{ $poem->title_bangla }}"
-                                        class="w-full h-48 object-cover rounded-lg">
-                                </div>
-                            @endif
-
-                            <!-- Poem Title -->
-                            <h3 class="text-xl font-semibold mb-3 bangla-text">
-                                {{ $poem->title_bangla }}
+            @if (count($contentByCategory) > 0)
+                @foreach ($contentByCategory as $categorySlug => $categoryData)
+                    <div class="mb-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-2xl font-bold bangla-text"
+                                style="color: {{ $categoryData['category']->color }}">
+                                {{ $categoryData['category']->name_bangla }}
                             </h3>
-                            @if ($poem->title_english)
-                                <p class="text-sm text-gray-600 mb-3 english-text">{{ $poem->title_english }}</p>
-                            @endif
-
-                            <!-- Poem Content Preview -->
-                            <p class="text-gray-600 mb-4 bangla-text">
-                                {{ Str::limit(strip_tags($poem->content_bangla), 150) }}
-                            </p>
-
-                            <!-- Poem Meta -->
-                            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                                <span class="bangla-text">{{ $poem->created_at->format('d M Y') }}</span>
-                                @if ($poem->category)
-                                    <span class="bangla-text">{{ $poem->category->name_bangla }}</span>
-                                @endif
-                            </div>
-
-                            <!-- Read More Link -->
-                            <a href="{{ route('poems.show', $poem) }}"
-                                class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm bangla-text">
-                                পড়ুন →
-                            </a>
+                            <span class="text-sm text-gray-500 bangla-text">
+                                {{ $categoryData['content']->count() }}টি {{ $categoryData['category']->name_bangla }}
+                            </span>
                         </div>
-                    @endforeach
-                </div>
 
-                <!-- Pagination -->
-                @if ($poems->hasPages())
-                    <div class="mt-8">
-                        {{ $poems->links() }}
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            @foreach ($categoryData['content'] as $content)
+                                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition duration-300">
+                                    <!-- Content Image -->
+                                    @if ($content->image_path)
+                                        <div class="mb-3">
+                                            <img src="{{ Storage::url($content->image_path) }}"
+                                                alt="{{ $content->title_bangla }}"
+                                                class="w-full h-32 object-cover rounded-lg">
+                                        </div>
+                                    @endif
+
+                                    <!-- Content Title -->
+                                    <h4 class="text-lg font-semibold mb-2 bangla-text">
+                                        {{ $content->title_bangla }}
+                                    </h4>
+
+                                    <!-- Content Preview -->
+                                    <p class="text-gray-600 mb-3 bangla-text text-sm">
+                                        {{ Str::limit(strip_tags($content->content_bangla), 100) }}
+                                    </p>
+
+                                    <!-- Content Meta -->
+                                    <div class="flex items-center justify-between text-xs text-gray-500 mb-3">
+                                        <span class="bangla-text">{{ $content->created_at->format('d M Y') }}</span>
+                                        <span class="px-2 py-1 rounded-full text-xs"
+                                            style="background-color: {{ $categoryData['category']->color }}20; color: {{ $categoryData['category']->color }}">
+                                            {{ $categoryData['category']->name_bangla }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Read More Link -->
+                                    <a href="{{ route('posts.show', $content) }}"
+                                        class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm bangla-text">
+                                        পড়ুন →
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                @endif
+                @endforeach
             @else
                 <div class="text-center py-12">
                     <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor"
@@ -119,8 +125,8 @@
                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2 bangla-text">কোনো কবিতা পাওয়া যায়নি</h3>
-                    <p class="text-gray-500 bangla-text">এই কবির কোনো প্রকাশিত কবিতা নেই</p>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2 bangla-text">কোনো রচনা পাওয়া যায়নি</h3>
+                    <p class="text-gray-500 bangla-text">এই লেখকের কোনো প্রকাশিত রচনা নেই</p>
                 </div>
             @endif
         </div>

@@ -18,8 +18,14 @@ class PoemController extends Controller
      */
     public function index(): View
     {
+        // Get the poems category
+        $poemsCategory = \App\Models\Category::where('slug', 'kobita')->first();
+        
         $poems = Poem::with(['user', 'category'])
             ->where('is_published', true)
+            ->when($poemsCategory, function ($query) use ($poemsCategory) {
+                return $query->where('category_id', $poemsCategory->id);
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(12);
             
@@ -86,7 +92,7 @@ class PoemController extends Controller
             $poem->syncTags($tagNames);
         }
 
-        return redirect()->route('poems.show', $poem)
+        return redirect()->route('posts.show', $poem)
             ->with('success', 'কবিতা সফলভাবে সংরক্ষিত হয়েছে।');
     }
 
@@ -168,7 +174,7 @@ class PoemController extends Controller
             $poem->syncTags($tagNames);
         }
 
-        return redirect()->route('poems.show', $poem)
+        return redirect()->route('posts.show', $poem)
             ->with('success', 'কবিতা সফলভাবে আপডেট হয়েছে।');
     }
 

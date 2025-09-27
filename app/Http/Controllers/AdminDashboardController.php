@@ -154,7 +154,7 @@ class AdminDashboardController extends Controller
         
         $poems = $query->orderBy('created_at', 'desc')->paginate(20);
             
-        return view('admin.poems.index', compact('poems'));
+        return view('admin.posts.index', compact('poems'));
     }
     
     /**
@@ -355,7 +355,7 @@ class AdminDashboardController extends Controller
             ->orderBy('name_bangla')
             ->get();
             
-        return view('admin.poems.create', compact('categories', 'poets', 'users'));
+        return view('admin.posts.create', compact('categories', 'poets', 'users'));
     }
     
     /**
@@ -399,7 +399,7 @@ class AdminDashboardController extends Controller
             $poem->syncTags($tagNames);
         }
 
-        return redirect()->route('admin.poems')
+        return redirect()->route('admin.posts')
             ->with('success', 'কবিতা সফলভাবে সংরক্ষিত হয়েছে।');
     }
 

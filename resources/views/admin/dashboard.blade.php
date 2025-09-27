@@ -101,7 +101,7 @@
                 </div>
                 <div class="bg-gray-50 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('admin.poems', ['status' => 'draft']) }}"
+                        <a href="{{ route('admin.posts', ['status' => 'draft']) }}"
                             class="text-blue-600 hover:text-blue-800 bangla-text">দেখুন →</a>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900 bangla-text">সদ্য প্রকাশিত কবিতা</h3>
-                    <a href="{{ route('admin.poems') }}" class="text-sm text-blue-600 hover:text-blue-800 bangla-text">সব
+                    <a href="{{ route('admin.posts') }}" class="text-sm text-blue-600 hover:text-blue-800 bangla-text">সব
                         দেখুন</a>
                 </div>
                 <div class="space-y-3">
@@ -191,7 +191,7 @@
             <div class="bg-white shadow rounded-lg p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-medium text-gray-900 bangla-text">অনুমোদনের অপেক্ষায়</h3>
-                    <a href="{{ route('admin.poems', ['status' => 'draft']) }}"
+                    <a href="{{ route('admin.posts', ['status' => 'draft']) }}"
                         class="text-sm text-blue-600 hover:text-blue-800 bangla-text">সব দেখুন</a>
                 </div>
                 <div class="space-y-3">
@@ -231,7 +231,7 @@
         <div class="bg-white shadow rounded-lg p-6">
             <h3 class="text-lg font-medium text-gray-900 mb-4 bangla-text">দ্রুত কাজ</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="{{ route('poems.create') }}"
+                <a href="{{ route('posts.create') }}"
                     class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                         <i class="fas fa-plus text-blue-600"></i>

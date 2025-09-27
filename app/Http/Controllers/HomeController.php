@@ -47,6 +47,22 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
             
+        // Get poems by category for home page sections
+        $poemsByCategory = [];
+        $categorySlugs = ['kobita', 'uponnas', 'chotogolpo', 'blog', 'chora', 'probondho', 'natok'];
+        
+        foreach ($categorySlugs as $slug) {
+            $category = Category::where('slug', $slug)->where('is_active', true)->first();
+            if ($category) {
+                $poemsByCategory[$slug] = Poem::with(['user', 'category'])
+                    ->where('category_id', $category->id)
+                    ->where('is_published', true)
+                    ->orderBy('created_at', 'desc')
+                    ->limit(6)
+                    ->get();
+            }
+        }
+        
         // Get statistics
         $stats = [
             'total_poems' => Poem::where('is_published', true)->count(),
@@ -60,6 +76,7 @@ class HomeController extends Controller
             'featuredPoems', 
             'categories', 
             'featuredPoets', 
+            'poemsByCategory',
             'stats'
         ));
     }

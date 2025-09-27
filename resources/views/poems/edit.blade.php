@@ -8,7 +8,7 @@
                 <p class="text-gray-600 bangla-text mt-2">আপনার কবিতাটি সম্পাদনা করুন</p>
             </div>
 
-            <form method="POST" action="{{ route('poems.update', $poem) }}" enctype="multipart/form-data" class="space-y-6">
+            <form method="POST" action="{{ route('posts.update', $poem) }}" enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
 
@@ -27,17 +27,6 @@
                         @enderror
                     </div>
 
-                    <div>
-                        <label for="title_english" class="block text-sm font-medium text-gray-700 mb-2">
-                            কবিতার শিরোনাম (ইংরেজি)
-                        </label>
-                        <input type="text" id="title_english" name="title_english"
-                            value="{{ old('title_english', $poem->title_english) }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        @error('title_english')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
                 </div>
 
                 <!-- Content Fields -->
@@ -54,16 +43,6 @@
                         @enderror
                     </div>
 
-                    <div>
-                        <label for="content_english" class="block text-sm font-medium text-gray-700 mb-2">
-                            কবিতার বিষয়বস্তু (ইংরেজি)
-                        </label>
-                        <textarea id="content_english" name="content_english" rows="12"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('content_english', $poem->content_english) }}</textarea>
-                        @error('content_english')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
                 </div>
 
                 <!-- Category and Tags -->
@@ -198,7 +177,7 @@
 
                 <!-- Action Buttons -->
                 <div class="flex items-center justify-between pt-6 border-t border-gray-200">
-                    <a href="{{ route('poems.show', $poem) }}"
+                    <a href="{{ route('posts.show', $poem) }}"
                         class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded bangla-text">
                         বাতিল
                     </a>

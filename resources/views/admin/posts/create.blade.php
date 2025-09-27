@@ -6,14 +6,40 @@
 @endsection
 
 @section('content')
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold mb-6 bangla-text">নতুন পোস্ট লিখুন</h1>
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold bangla-text">নতুন পোস্ট লিখুন (অ্যাডমিন)</h1>
+                <a href="{{ route('admin.posts') }}"
+                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded bangla-text">
+                    পোস্টের তালিকায় ফিরে যান
+                </a>
+            </div>
 
-            <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data" class="space-y-6">
+            <form method="POST" action="{{ route('admin.posts.store') }}" class="space-y-6">
                 @csrf
 
-                <!-- Content Title in Bangla -->
+                <!-- Writer Selection -->
+                <div>
+                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
+                        লেখকের নাম নির্বাচন করুন <span class="text-red-500">*</span>
+                    </label>
+                    <select id="user_id" name="user_id"
+                        class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required>
+                        <option value="">লেখক নির্বাচন করুন</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                {{ $user->name_bangla ?? $user->name }} ({{ $user->email }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('user_id')
+                        <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Poem Title in Bangla -->
                 <div>
                     <label for="title_bangla" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
                         পোস্টের শিরোনাম (বাংলায়) <span class="text-red-500">*</span>
@@ -27,29 +53,28 @@
                 </div>
 
 
-                <!-- Content Type Selection -->
+                <!-- Category Selection -->
                 <div>
                     <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                        পোস্টের ধরন <span class="text-red-500">*</span>
+                        পোস্টের বিভাগ <span class="text-red-500">*</span>
                     </label>
                     <select id="category_id" name="category_id"
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         required>
-                        <option value="">পোস্টের ধরন নির্বাচন করুন</option>
+                        <option value="">বিভাগ নির্বাচন করুন</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}"
+                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                 {{ $category->name_bangla }}
                             </option>
                         @endforeach
                     </select>
-                    <p class="mt-1 text-sm text-gray-500 bangla-text">আপনি কি ধরনের পোস্ট লিখতে চান? (কবিতা, উপন্যাস, গল্প,
-                        ব্লগ ইত্যাদি)</p>
                     @error('category_id')
                         <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Writer Selection (if translation) -->
+                <!-- Original Writer Selection (if translation) -->
                 <div>
                     <label for="poet_id" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
                         মূল লেখক (যদি অনুবাদ হয়)
@@ -57,7 +82,7 @@
                     <select id="poet_id" name="poet_id"
                         class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">মূল লেখক নির্বাচন করুন</option>
-                        @foreach (\App\Models\Poet::where('is_active', true)->orderBy('sort_order')->get() as $poet)
+                        @foreach ($poets as $poet)
                             <option value="{{ $poet->id }}" {{ old('poet_id') == $poet->id ? 'selected' : '' }}>
                                 {{ $poet->name_bangla }}
                             </option>
@@ -68,7 +93,7 @@
                     @enderror
                 </div>
 
-                <!-- Content in Bangla -->
+                <!-- Poem Content in Bangla -->
                 <div>
                     <label for="content_bangla" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
                         পোস্টের বিষয়বস্তু (বাংলায়) <span class="text-red-500">*</span>
@@ -95,58 +120,6 @@
                     @enderror
                 </div>
 
-                <!-- Media Options -->
-                <div class="border-t pt-6">
-                    <h3 class="text-lg font-semibold mb-4 bangla-text">মিডিয়া অপশন</h3>
-
-                    <!-- Image Upload -->
-                    <div class="mb-6">
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                            কবিতার ছবি আপলোড করুন
-                        </label>
-                        <input type="file" id="image" name="image" accept="image/*"
-                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                            onchange="previewImage(this)">
-                        @error('image')
-                            <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
-                        @enderror
-
-                        <!-- Image Preview -->
-                        <div id="imagePreview" class="mt-3 hidden">
-                            <img id="previewImg" src="" alt="Preview" class="max-w-xs h-auto rounded-lg shadow-md">
-                            <button type="button" onclick="removeImage()"
-                                class="mt-2 text-sm text-red-600 hover:text-red-800 bangla-text">
-                                ছবি সরান
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- YouTube Embed Code -->
-                    <div class="mb-6">
-                        <label for="youtube_embed_code" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
-                            YouTube এম্বেড কোড (ঐচ্ছিক)
-                        </label>
-                        <textarea id="youtube_embed_code" name="youtube_embed_code" rows="4"
-                            class="block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="YouTube ভিডিওর এম্বেড কোড এখানে পেস্ট করুন...">{{ old('youtube_embed_code') }}</textarea>
-                        <p class="mt-1 text-xs text-gray-500 bangla-text">
-                            YouTube ভিডিওর "Share" বাটনে ক্লিক করে "Embed" অপশন থেকে কোড কপি করুন
-                        </p>
-                        @error('youtube_embed_code')
-                            <p class="mt-1 text-sm text-red-600 bangla-text">{{ $message }}</p>
-                        @enderror
-
-                        <!-- YouTube Preview -->
-                        <div id="youtubePreview" class="mt-3 hidden">
-                            <div id="previewYoutube" class="w-full max-w-md"></div>
-                            <button type="button" onclick="removeYoutube()"
-                                class="mt-2 text-sm text-red-600 hover:text-red-800 bangla-text">
-                                ভিডিও সরান
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Keyboard Switcher for Bengali Input -->
                 <x-keyboard-switcher name="input_method" value="{{ old('input_method', 'avro') }}" />
 
@@ -166,7 +139,7 @@
                             {{ old('is_featured') ? 'checked' : '' }}
                             class="form-checkbox h-4 w-4 text-blue-600 transition duration-150 ease-in-out">
                         <label for="is_featured" class="ml-2 text-sm text-gray-700 bangla-text">
-                            বিশেষ রচনা
+                            বিশেষ কবিতা
                         </label>
                     </div>
 
@@ -182,7 +155,7 @@
 
                 <!-- Submit Buttons -->
                 <div class="flex justify-end space-x-4">
-                    <a href="{{ route('posts.index') }}"
+                    <a href="{{ route('admin.posts') }}"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded bangla-text">
                         বাতিল
                     </a>
@@ -196,60 +169,7 @@
     </div>
 
     <script>
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').classList.remove('hidden');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function removeImage() {
-            document.getElementById('image').value = '';
-            document.getElementById('imagePreview').classList.add('hidden');
-            document.getElementById('previewImg').src = '';
-        }
-
-        function previewYoutube() {
-            const embedCode = document.getElementById('youtube_embed_code').value.trim();
-            if (embedCode) {
-                // Extract video ID from embed code
-                const videoIdMatch = embedCode.match(/embed\/([a-zA-Z0-9_-]+)/);
-                if (videoIdMatch) {
-                    const videoId = videoIdMatch[1];
-                    const previewDiv = document.getElementById('previewYoutube');
-                    previewDiv.innerHTML = `
-                        <iframe width="100%" height="200" 
-                                src="https://www.youtube.com/embed/${videoId}" 
-                                frameborder="0" 
-                                allowfullscreen>
-                        </iframe>
-                    `;
-                    document.getElementById('youtubePreview').classList.remove('hidden');
-                }
-            }
-        }
-
-        function removeYoutube() {
-            document.getElementById('youtube_embed_code').value = '';
-            document.getElementById('youtubePreview').classList.add('hidden');
-            document.getElementById('previewYoutube').innerHTML = '';
-        }
-
-        // Add event listener for YouTube embed code changes
         document.addEventListener('DOMContentLoaded', function() {
-            const youtubeTextarea = document.getElementById('youtube_embed_code');
-            if (youtubeTextarea) {
-                youtubeTextarea.addEventListener('input', function() {
-                    // Debounce the preview function
-                    clearTimeout(this.previewTimeout);
-                    this.previewTimeout = setTimeout(previewYoutube, 1000);
-                });
-            }
-
             // Initialize CKEditor
             ClassicEditor
                 .create(document.querySelector('#content_bangla'), {

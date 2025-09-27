@@ -10,9 +10,9 @@
                     <p class="text-gray-600 bangla-text mt-2">বাংলা কবিতার সংগ্রহ</p>
                 </div>
                 @auth
-                    <a href="{{ route('poems.create') }}"
+                    <a href="{{ route('posts.create') }}"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bangla-text">
-                        নতুন কবিতা লিখুন
+                        নতুন পোস্ট লিখুন
                     </a>
                 @endauth
             </div>
@@ -20,7 +20,7 @@
 
         <!-- Search and Filter -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <form method="GET" action="{{ route('poems.index') }}" class="space-y-4">
+            <form method="GET" action="{{ route('posts.index') }}" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-2 bangla-text">
@@ -95,7 +95,7 @@
                                     <td class="px-6 py-4">
                                         <div class="flex-1 min-w-0">
                                             <div class="text-sm font-medium text-gray-900 bangla-text mb-2">
-                                                <a href="{{ route('poems.show', $poem) }}"
+                                                <a href="{{ route('posts.show', $poem) }}"
                                                     class="hover:text-blue-600 transition-colors {{ $loop->odd ? 'text-red-600' : 'text-gray-900' }}">
                                                     {{ $poem->title_bangla }}
                                                 </a>
@@ -138,7 +138,7 @@
                 <p class="mt-1 text-sm text-gray-500 bangla-text">এখনো কোন কবিতা প্রকাশিত হয়নি।</p>
                 @auth
                     <div class="mt-6">
-                        <a href="{{ route('poems.create') }}"
+                        <a href="{{ route('posts.create') }}"
                             class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 bangla-text">
                             প্রথম কবিতা লিখুন
                         </a>

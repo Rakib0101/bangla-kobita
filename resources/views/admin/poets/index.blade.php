@@ -1,18 +1,18 @@
 @extends('layouts.admin')
 
-@section('title', 'Poets Management')
-@section('page-title', 'কবি ম্যানেজমেন্ট')
+@section('title', 'Writers Management')
+@section('page-title', 'লেখক ম্যানেজমেন্ট')
 
 @section('content')
     <div class="space-y-6">
         <!-- Header Actions -->
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="text-2xl font-bold text-gray-900 bangla-text">কবি তালিকা</h2>
-                <p class="text-gray-600 bangla-text">সব কবির তালিকা এবং তাদের কবিতা</p>
+                <h2 class="text-2xl font-bold text-gray-900 bangla-text">লেখক তালিকা</h2>
+                <p class="text-gray-600 bangla-text">সব লেখকের তালিকা এবং তাদের রচনা</p>
             </div>
             <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded bangla-text">
-                <i class="fas fa-plus mr-2"></i>নতুন কবি যোগ করুন
+                <i class="fas fa-plus mr-2"></i>নতুন লেখক যোগ করুন
             </button>
         </div>
 
@@ -25,7 +25,7 @@
                             খুঁজুন
                         </label>
                         <input type="text" id="search" name="search" value="{{ request('search') }}"
-                            placeholder="কবির নাম খুঁজুন"
+                            placeholder="লেখকের নাম খুঁজুন"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bangla-text">
                     </div>
                     <div>
@@ -58,11 +58,11 @@
                         <tr>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bangla-text">
-                                কবি
+                                লেখক
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bangla-text">
-                                কবিতার সংখ্যা
+                                রচনার সংখ্যা
                             </th>
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bangla-text">
@@ -100,7 +100,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span
                                         class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ $poet->poems_count }} কবিতা
+                                        {{ $poet->poems_count }} রচনা
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -126,8 +126,8 @@
                                 <td colspan="5" class="px-6 py-12 text-center">
                                     <div class="text-gray-500 bangla-text">
                                         <i class="fas fa-user-tie text-4xl mb-4"></i>
-                                        <p class="text-lg font-medium">কোন কবি পাওয়া যায়নি</p>
-                                        <p class="text-sm">এখনো কোন কবি নিবন্ধিত হয়নি।</p>
+                                        <p class="text-lg font-medium">কোন লেখক পাওয়া যায়নি</p>
+                                        <p class="text-sm">এখনো কোন লেখক নিবন্ধিত হয়নি।</p>
                                     </div>
                                 </td>
                             </tr>
